@@ -1,28 +1,65 @@
 <template>
   <div>
+    <!-- 视频 -->
+    <div class="video-post" v-if="post.type == 2">
+      <div class="title line1">{{ post.title }}</div>
+      <div class="img">
+        <img :src="post.cover[0].url" alt="" />
+        <div class="play">
+          <i class="iconfont iconshipin"></i>
+        </div>
+      </div>
+      <div class="bottom">
+        <span>{{ post.user.nickname }}</span>
+        <span>{{ post.comments.length }} 跟帖</span>
+      </div>
+    </div>
     <!-- 单张图片 -->
-    <div class="single-img-post">
+    <div class="single-img-post" v-else-if="post.cover.length < 3">
       <div class="left">
-        <div class="title line2">刚拼的名媛,好害怕一会跑了</div>
+        <div class="title line2">{{ post.title }}</div>
         <div class="bottom">
-          <span>娱乐在线</span>
-          <span>0 跟帖</span>
+          <span>{{ post.user.nickname }}</span>
+          <span>{{ post.comments.length }} 跟帖</span>
         </div>
       </div>
       <div class="right">
-        <img src="../assets/7.png" alt="" />
+        <img :src="post.cover[0].url" alt="" />
       </div>
     </div>
     <!-- 三张图片 -->
-    <!-- 视频 -->
+    <div class="multi-img-post" v-else>
+      <div class="title line1">{{ post.title }}</div>
+      <div class="bottom">
+        <div class="imgs">
+          <img :src="post.cover[0].url" alt="" />
+          <img :src="post.cover[1].url" alt="" />
+          <img :src="post.cover[2].url" alt="" />
+        </div>
+        <span>{{ post.user.nickname }}</span>
+        <span>{{ post.comments.length }} 跟帖</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  props: ['post'],
+}
 </script>
 
 <style scoped lang="less">
+.title {
+  line-height: 20px;
+  font-size: 14px;
+}
+.bottom {
+  span {
+    color: #999;
+    margin-right: 20px;
+  }
+}
 .single-img-post {
   padding: 10px;
   border-bottom: 1px solid #ccc;
@@ -33,20 +70,57 @@ export default {}
     flex-direction: column;
     justify-content: space-between;
     padding-right: 10px;
-
-    .title {
-      line-height: 20px;
-      font-size: 14px;
-    }
-    span {
-      color: #999;
-    }
   }
   .right {
     img {
       width: 110px;
       height: 75px;
       object-fit: cover;
+    }
+  }
+}
+
+.multi-img-post {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  .imgs {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    img {
+      width: 110px;
+      height: 75px;
+      object-fit: cover;
+    }
+  }
+}
+
+.video-post {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  .img {
+    position: relative;
+    img {
+      padding: 10px 0;
+      width: 340px;
+      height: 170px;
+      object-fit: cover;
+    }
+    .play {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      line-height: 60px;
+      text-align: center;
+      .iconfont {
+        font-size: 34px;
+        color: #fff;
+      }
     }
   }
 }
