@@ -4,7 +4,7 @@
     <div class="video-post" v-if="post.type == 2">
       <div class="title line1">{{ post.title }}</div>
       <div class="img">
-        <img :src="post.cover[0].url" alt="" />
+        <img :src="fixedUrl(post.cover[0].url)" alt="" />
         <div class="play">
           <i class="iconfont iconshipin"></i>
         </div>
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="right">
-        <img :src="post.cover[0].url" alt="" />
+        <img :src="fixedUrl(post.cover[0].url)" alt="" />
       </div>
     </div>
     <!-- 三张图片 -->
@@ -32,9 +32,9 @@
       <div class="title line1">{{ post.title }}</div>
       <div class="bottom">
         <div class="imgs">
-          <img :src="post.cover[0].url" alt="" />
-          <img :src="post.cover[1].url" alt="" />
-          <img :src="post.cover[2].url" alt="" />
+          <img :src="fixedUrl(post.cover[0].url)" alt="" />
+          <img :src="fixedUrl(post.cover[1].url)" alt="" />
+          <img :src="fixedUrl(post.cover[2].url)" alt="" />
         </div>
         <span>{{ post.user.nickname }}</span>
         <span>{{ post.comments.length }} 跟帖</span>
@@ -46,6 +46,16 @@
 <script>
 export default {
   props: ['post'],
+  methods: {
+    fixedUrl(url) {
+      //以http为开头的
+      if (url.startsWith('http')) {
+        return url
+      } else {
+        return this.$axios.defaults.baseURL + url
+      }
+    },
+  },
 }
 </script>
 
