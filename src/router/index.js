@@ -9,13 +9,14 @@ import Edit from '../pages/Edit.vue'
 import MyFollow from '../pages/MyFollow.vue'
 import MyComment from '../pages/MyComment'
 import MyStar from '../pages/MyStar'
+import Home from '../pages/Home'
 
 //注册
 Vue.use(VueRouter)
 const router = new VueRouter({
   //配置路由规则
   routes: [
-    { path: '/', redirect: '/login' },
+    { path: '/', redirect: '/home' },
     { path: '/login',name:'login', component: Login },
     { path: '/register',name:'register', component: Register },
     { path: '/user',name:'user', component: User },
@@ -23,12 +24,17 @@ const router = new VueRouter({
     { path: '/myfollow', component: MyFollow },
     { path: '/mycomment', component: MyComment },
     { path: '/mystar', component: MyStar },
+    { path: '/home', component: Home },
   ],
 })
 
 // 全局前置守卫
 router.beforeEach((to,from,next)=>{ 
-  if(to.path === '/user') { //未完待续
+    
+const authPath = ['/user','/myfollow','/mycomments','/mystar','/edit']
+
+
+  if(authPath.includes(to.path)) { //未完待续
     let token = localStorage.getItem('token')
     if (token) {
       next()
