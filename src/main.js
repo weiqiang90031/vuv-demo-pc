@@ -38,8 +38,12 @@ import {
   RadioGroup,
   Radio,
   Uploader,
+  PullRefresh,
+  Sticky,
 } from 'vant'
 
+Vue.use(Sticky)
+Vue.use(PullRefresh)
 Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(List)

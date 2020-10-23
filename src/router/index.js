@@ -17,33 +17,35 @@ const router = new VueRouter({
   //配置路由规则
   routes: [
     { path: '/', redirect: '/home' },
-    { path: '/login',name:'login', component: Login },
-    { path: '/register',name:'register', component: Register },
-    { path: '/user',name:'user', component: User },
-    { path: '/edit',name:'edit', component: Edit },
+    { path: '/login', name: 'login', component: Login },
+    { path: '/register', name: 'register', component: Register },
+    { path: '/user', name: 'user', component: User },
+    { path: '/edit', name: 'edit', component: Edit },
     { path: '/myfollow', component: MyFollow },
     { path: '/mycomment', component: MyComment },
     { path: '/mystar', component: MyStar },
     { path: '/home', component: Home },
   ],
 })
-
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 // 全局前置守卫
-router.beforeEach((to,from,next)=>{ 
-    
-const authPath = ['/user','/myfollow','/mycomments','/mystar','/edit']
+router.beforeEach((to, from, next) => {
+  const authPath = ['/user', '/myfollow', '/mycomments', '/mystar', '/edit']
 
-
-  if(authPath.includes(to.path)) { //未完待续
+  if (authPath.includes(to.path)) {
+    //未完待续
     let token = localStorage.getItem('token')
     if (token) {
       next()
-    }else {
+    } else {
       next('/login')
     }
-  }else {//放行
+  } else {
+    //放行
     next()
   }
-  
 })
 export default router
