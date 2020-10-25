@@ -86,6 +86,42 @@ export default {
     },
     //开始登录校验
     async startLogin() {
+      try {
+        await this.$dialog.confirm({
+          title: '提示',
+          message: '登陆吗?',
+        })
+        console.log('确定')
+
+        let res = await this.$axios.post('/login', {
+          username: this.username,
+          password: this.password,
+        })
+
+        console.log('登录结果', res)
+        const { statusCode, message, data } = res.data
+
+        // 1. 保存token + 用户id
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user_id', data.user.id)
+
+        // 2. 提示
+        this.$toast.success(message)
+
+        // 3. 跳转
+        if (this.$route.params.back) {
+          // 3.1 登录完返回   /detail ==> /login
+          this.$router.back()
+        } else {
+          // 3.2 登录去/user  直接访问的/login => /user
+          this.$router.push('/user')
+        }
+      } catch (error) {
+        console.log('取消')
+      }
+    },
+    async startLogin1() {
+      // 有值 + 正确
       if (
         this.username !== '' &&
         this.password !== '' &&
@@ -100,16 +136,17 @@ export default {
         const { statusCode, message, data } = res.data
 
         if (statusCode === 200) {
-          //保存token+用户id
+          // 1. 保存token + 用户id
           localStorage.setItem('token', data.token)
           localStorage.setItem('user_id', data.user.id)
-          //提示
+
+          // 2. 提示
           this.$toast.success(message)
 
-          //跳转
+          // 3. 跳转  /user
           this.$router.push('/user')
         } else {
-          this.$toast.success(message)
+          this.$toast.fail(message)
         }
       } else {
         this.$toast.loading('校验失败')
@@ -119,9 +156,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+h1 {
+  color: red;
+}
+
 .link {
-  padding-left: 30px;
-  font-size: 15px;
+  text-align: right;
+  padding-right: 20px;
+  font-size: 14px;
 }
 </style>
