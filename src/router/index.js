@@ -10,6 +10,7 @@ import MyFollow from '../pages/MyFollow.vue'
 import MyComment from '../pages/MyComment'
 import MyStar from '../pages/MyStar'
 import Home from '../pages/Home'
+import Detail from '../pages/Detail'
 
 //注册
 Vue.use(VueRouter)
@@ -25,6 +26,7 @@ const router = new VueRouter({
     { path: '/mycomment', component: MyComment },
     { path: '/mystar', component: MyStar },
     { path: '/home', component: Home },
+    { path: '/detail/:id', component: Detail },
   ],
 })
 const originalPush = VueRouter.prototype.push

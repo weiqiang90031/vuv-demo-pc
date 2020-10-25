@@ -34,7 +34,7 @@
             finished-text="我是有底线的!!"
           >
             <hm-post
-              @click.native="$router.push('/detail')"
+              @click.native="$router.push(`detail/${post.id}`)"
               v-for="(post, index) in postList"
               :key="index"
               :post="post"
